@@ -17,6 +17,7 @@ interface Props {
 }
 
 function Tweet({ tweet }: Props) {
+   const [liked, setLiked] = useState<boolean>(false);
    const [comments, setComments] = useState<Comment[]>([]);
    const [commentBoxVisible, setCommentBoxVisible] = useState<boolean>(false);
    const [input, setInput] = useState<string>("");
@@ -53,6 +54,13 @@ function Tweet({ tweet }: Props) {
    useEffect(() => {
       refreshComments();
    }, []);
+
+   const updateLikes = (e: React.MouseEventHandler<SVGSVGElement>) => {
+      setLiked(!liked);
+   };
+
+   let likedStyles = liked ? "text-red-500" : "";
+   const likeStyle = `${likedStyles} h-5 w-5 cursor-pointer transition-transform duration-150 ease-out hover:scale-150`;
 
    return (
       <div className="flex flex-col p-5 space-x-3 border-y border-gray-100">
@@ -101,7 +109,7 @@ function Tweet({ tweet }: Props) {
             </div>
 
             <div className="flex cursor-pointer items-center space-x-3 text-gray-400">
-               <HeartIcon className="h-5 w-5" />
+               <HeartIcon className={likeStyle} onClick={updateLikes} />
             </div>
 
             <div className="flex cursor-pointer items-center space-x-3 text-gray-400">
